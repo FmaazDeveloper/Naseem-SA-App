@@ -1,3 +1,4 @@
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
 
 class home extends StatelessWidget {
@@ -33,16 +34,20 @@ class home extends StatelessWidget {
                   ],
                 ),
                 Text(body1),
-                Container(
-                  height: 250,
-                  width: 600,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    // border: Border.all(color: Colors.black, width: 3),
-                    borderRadius: BorderRadius.circular(30),
-                    image: const DecorationImage(
-                        image: AssetImage('images/Riyadh.JPG'),
-                        fit: BoxFit.cover),
+                SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                  child: AnotherCarousel(
+                    onImageTap: (index) {
+                      print(index);
+                    },
+                    images: const [
+                      AssetImage("images/Abha.jpg"),
+                      AssetImage("images/Dammam.jpeg"),
+                      AssetImage("images/Diriyah.jpg"),
+                    ],
+                    dotSize: 6,
+                    indicatorBgPadding: 0,
                   ),
                 ),
                 Row(
