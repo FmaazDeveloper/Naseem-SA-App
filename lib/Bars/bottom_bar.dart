@@ -23,12 +23,12 @@ class _bottomBarState extends State<bottomBar> {
     return Container(
       color: Colors.green.shade900,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         child: GNav(
           gap: 8,
           color: Colors.white,
           activeColor: Colors.green,
-          tabBackgroundColor: Colors.grey.shade200,
+          tabBackgroundColor: Colors.grey.shade100,
           padding: const EdgeInsets.all(8),
           onTabChange: (index) {
             Navigator.push(
