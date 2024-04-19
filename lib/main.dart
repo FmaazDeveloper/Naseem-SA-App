@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:naseem_sa/Bars/app_bar.dart';
-import 'package:naseem_sa/Bars/bottom_bar.dart';
 import 'package:naseem_sa/Screens/home.dart';
 
 void main() {
@@ -12,15 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const appBar(),
-        ),
-        body: const home(),
-        bottomNavigationBar: const bottomBar(),
-      ),
+      home: home(),
     );
   }
 }

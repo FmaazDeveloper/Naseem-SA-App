@@ -1,5 +1,7 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:naseem_sa/Bars/app_bar.dart';
+import 'package:naseem_sa/Bars/bottom_bar.dart';
 
 class home extends StatelessWidget {
   const home({super.key});
@@ -16,6 +18,10 @@ class home extends StatelessWidget {
     String body3 =
         "The Kingdom of Saudi Arabia enjoys a group of wonderful islands, estimated at approximately 1,285 islands, distributed between the Red Sea and the Arabian Gulf. These islands vary between sandy, volcanic and coral islands, and are characterized by high mountainous terrain and picturesque natural landscapes.";
     return Scaffold(
+      appBar: AppBar(
+        // automaticallyImplyLeading: false, //To rempve back arrow
+          title: const MyAppBar(pageName: 'Home page',),
+        ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
@@ -77,6 +83,7 @@ class home extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const bottomBar(pageIndex: 1),
     );
   }
 }

@@ -6,11 +6,11 @@ import 'package:naseem_sa/Screens/my_profile.dart';
 import 'package:naseem_sa/Screens/tourist_places.dart';
 
 class bottomBar extends StatefulWidget {
-  const bottomBar({super.key});
+  final int pageIndex;
+  const bottomBar({super.key,required this.pageIndex});
   @override
   State<bottomBar> createState() => _bottomBarState();
 }
-
 class _bottomBarState extends State<bottomBar> {
   final List<Widget> _screens = const [
     myProfile(),
@@ -36,6 +36,7 @@ class _bottomBarState extends State<bottomBar> {
               MaterialPageRoute(builder: (context) => _screens[index]),
             );
           },
+          selectedIndex: widget.pageIndex,
           tabs: const [
             GButton(icon: Icons.person, text: "My Profile"),
             GButton(icon: Icons.home, text: "Home Page"),
