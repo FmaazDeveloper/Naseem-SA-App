@@ -1,10 +1,43 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'package:naseem_sa/Bars/app_bar.dart';
 import 'package:naseem_sa/Bars/bottom_bar.dart';
 
-class home extends StatelessWidget {
-  const home({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<String> imageUrls = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchImageUrls();
+  }
+
+  Future<void> fetchImageUrls() async {
+    try {
+      final response = await http
+          .get(Uri.parse('http://10.0.2.2:8000/administrative_regions'));
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        setState(() {
+          imageUrls = List<String>.from(jsonData['photo']);
+        });
+      } else {
+        throw Exception('Failed to fetch image data');
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +52,8 @@ class home extends StatelessWidget {
         "The Kingdom of Saudi Arabia enjoys a group of wonderful islands, estimated at approximately 1,285 islands, distributed between the Red Sea and the Arabian Gulf. These islands vary between sandy, volcanic and coral islands, and are characterized by high mountainous terrain and picturesque natural landscapes.";
     return Scaffold(
       appBar: AppBar(
-        // automaticallyImplyLeading: false, //To rempve back arrow
-          title: const MyAppBar(pageName: 'Home page',),
-        ),
+        title: const MyAppBar(pageName: 'Home page'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
@@ -43,18 +75,19 @@ class home extends StatelessWidget {
                 SizedBox(
                   height: 200,
                   width: double.infinity,
-                  child: AnotherCarousel(
-                    onImageTap: (index) {
-                      print(index);
-                    },
-                    images: const [
-                      AssetImage("images/Abha.jpg"),
-                      AssetImage("images/Dammam.jpeg"),
-                      AssetImage("images/Diriyah.jpg"),
-                    ],
-                    dotSize: 6,
-                    indicatorBgPadding: 0,
-                  ),
+                  child: imageUrls.isNotEmpty
+                      ? AnotherCarousel(
+                          onImageTap: (index) {
+                            print(index);
+                          },
+                          images: imageUrls
+                              .map((url) =>
+                                  NetworkImage('http://127.0.0.1:8000$url'))
+                              .toList(),
+                          dotSize: 6,
+                          indicatorBgPadding: 0,
+                        )
+                      : Container(),
                 ),
                 Row(
                   children: [
@@ -83,7 +116,7 @@ class home extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const bottomBar(pageIndex: 1),
+      bottomNavigationBar: const BottomBar(pageIndex: 1),
     );
   }
 }

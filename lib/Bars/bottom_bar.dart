@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:naseem_sa/Screens/contact_us.dart';
-import 'package:naseem_sa/Screens/home.dart';
-import 'package:naseem_sa/Screens/my_profile.dart';
-import 'package:naseem_sa/Screens/tourist_places.dart';
+import 'package:naseem_sa/Screens/contact_us_screen.dart';
+import 'package:naseem_sa/Screens/home_screen.dart';
+import 'package:naseem_sa/Screens/profile_screen.dart';
+import 'package:naseem_sa/Screens/administrative_regions_screen.dart';
 
-class bottomBar extends StatefulWidget {
+class BottomBar extends StatefulWidget {
   final int pageIndex;
-  const bottomBar({super.key,required this.pageIndex});
+  const BottomBar({super.key, required this.pageIndex});
   @override
-  State<bottomBar> createState() => _bottomBarState();
+  State<BottomBar> createState() => _BottomBarState();
 }
-class _bottomBarState extends State<bottomBar> {
-  final List<Widget> _screens = const [
-    myProfile(),
-    home(),
-    touristPlaces(),
-    contactUs(),
+
+class _BottomBarState extends State<BottomBar> {
+  final List<Widget> _screens = [
+    ProfileScreen(),
+    const HomeScreen(),
+    const AdministrartiveRegionScreen(),
+    ContactUsScreen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class _bottomBarState extends State<bottomBar> {
             GButton(icon: Icons.person, text: "My Profile"),
             GButton(icon: Icons.home, text: "Home Page"),
             GButton(icon: Icons.map, text: "Tourist places"),
-            GButton(icon: Icons.support_agent, text: "Contact Us"),
+            GButton(icon: Icons.headset_mic, text: "Contact Us"),
           ],
         ),
       ),
