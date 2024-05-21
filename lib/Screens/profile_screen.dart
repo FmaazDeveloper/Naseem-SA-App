@@ -130,11 +130,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(
-                          myUrl + _userProfile!['photo'],
-                        ),
-                      ),
+                      radius: 60,
+                      backgroundImage: _userProfile!['photo'] != null
+                          ? NetworkImage(
+                              myUrl + _userProfile!['photo'],
+                            )
+                          : null,
+                    ),
                       const SizedBox(height: 20),
                       Text(
                         'Name: ${_userProfile!['name']}',

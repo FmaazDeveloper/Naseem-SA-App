@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:naseem_sa/Bars/bottom_bar.dart';
+import 'package:naseem_sa/Screens/auth/login_screen.dart';
+import 'package:naseem_sa/Screens/auth/register_screen.dart';
 import 'package:naseem_sa/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -170,11 +172,53 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.person, size: 64.0),
-                  SizedBox(height: 16.0),
-                  Text(
+                  const Icon(Icons.person, size: 64.0),
+                  const SizedBox(height: 16.0),
+                  const Text(
                     'Please log in to access the Contact Us feature',
                     style: TextStyle(fontSize: 18.0),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.login),
+                        label: const Text('Login',
+                            style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.person_add),
+                        label: const Text('Register',
+                            style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

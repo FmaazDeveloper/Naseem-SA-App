@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:naseem_sa/Bars/bottom_bar.dart';
+import 'package:naseem_sa/Screens/auth/login_screen.dart';
 import 'package:naseem_sa/Screens/profile_screen.dart';
 import 'package:naseem_sa/api/api.dart';
 
@@ -165,8 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           'role': _selectedRole,
                         };
 
-                        Uri apiUrl =
-                            Uri.parse(myUrl + 'api/register');
+                        Uri apiUrl = Uri.parse(myUrl + 'api/register');
                         http.post(apiUrl, body: requestBody).then((response) {
                           if (response.statusCode == 200) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -202,6 +202,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                     },
                     child: const Text('Register'),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                // Add the login link
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Already have an account? Login'),
                   ),
                 ),
               ],
