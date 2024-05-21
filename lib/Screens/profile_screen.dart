@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:naseem_sa/Bars/bottom_bar.dart';
 import 'package:naseem_sa/Screens/auth/login_screen.dart';
 import 'package:naseem_sa/Screens/auth/register_screen.dart';
+import 'package:naseem_sa/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -40,54 +41,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-Future<void> _fetchUserProfile() async {
-  Uri apiUrl = Uri.parse('http://10.0.2.2:8000/api/profile/$_email');
+  Future<void> _fetchUserProfile() async {
+    Uri apiUrl = Uri.parse(myUrl + 'api/profile/$_email');
 
-  try {
-    http.Response response = await http.get(apiUrl).timeout(Duration(seconds: 60));
+    try {
+      http.Response response =
+          await http.get(apiUrl).timeout(Duration(seconds: 60));
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        List<dynamic> jsonResponse = jsonDecode(response.body);
 
-      if (jsonResponse.length >= 2) {
-        Map<String, dynamic> userProfile = jsonResponse[0][0];
-        Map<String, dynamic> user = jsonResponse[1][0];
+        if (jsonResponse.length >= 2) {
+          Map<String, dynamic> userProfile = jsonResponse[0][0];
+          Map<String, dynamic> user = jsonResponse[1][0];
 
-        setState(() {
-          _userProfile = {
-            ...userProfile,
-            'name': user['name'],
-          };
-        });
+          setState(() {
+            _userProfile = {
+              ...userProfile,
+              'name': user['name'],
+            };
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to fetch user profile.'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
-    } else {
+    } on SocketException catch (e) {
+      // Handle _ClientSocketException (Connection timed out)
+      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to fetch user profile.'),
+          content: Text(
+              'Connection timed out. Please check your network connection.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      // Handle other exceptions
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error occurred while fetching the user profile.'),
           backgroundColor: Colors.red,
         ),
       );
     }
-  } on SocketException catch (e) {
-    // Handle _ClientSocketException (Connection timed out)
-    print('Error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Connection timed out. Please check your network connection.'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  } catch (e) {
-    // Handle other exceptions
-    print('Error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('An error occurred while fetching the user profile.'),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
 
   Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -129,7 +132,7 @@ Future<void> _fetchUserProfile() async {
                       CircleAvatar(
                         radius: 60,
                         backgroundImage: NetworkImage(
-                          'http://10.0.2.2:8000/${_userProfile!['photo']}',
+                          myUrl + _userProfile!['photo'],
                         ),
                       ),
                       const SizedBox(height: 20),

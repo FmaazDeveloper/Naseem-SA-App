@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:naseem_sa/Bars/bottom_bar.dart';
 import 'package:naseem_sa/Screens/profile_screen.dart';
+import 'package:naseem_sa/api/api.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -165,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         };
 
                         Uri apiUrl =
-                            Uri.parse('http://10.0.2.2:8000/api/register');
+                            Uri.parse(myUrl + 'api/register');
                         http.post(apiUrl, body: requestBody).then((response) {
                           if (response.statusCode == 200) {
                             ScaffoldMessenger.of(context).showSnackBar(

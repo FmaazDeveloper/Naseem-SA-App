@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:naseem_sa/Bars/app_bar.dart';
 import 'package:naseem_sa/Bars/bottom_bar.dart';
 import 'package:naseem_sa/Screens/landmarks_screen.dart';
+import 'package:naseem_sa/api/api.dart';
 
 class RegionScreen extends StatefulWidget {
   final int administrativeRegionID;
@@ -27,8 +28,8 @@ class _RegionScreenState extends State<RegionScreen> {
 
   Future<void> fetchLandmarkDetails() async {
     try {
-      final response = await http.get(Uri.parse(
-          'http://10.0.2.2:8000/api/regions/${widget.administrativeRegionID}')); // Replace with your API endpoint URL
+      final response = await http.get(Uri.parse(myUrl +
+          'api/regions/${widget.administrativeRegionID}')); // Replace with your API endpoint URL
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
@@ -47,7 +48,7 @@ class _RegionScreenState extends State<RegionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MyAppBar(pageName: 'Region Details'),
+        title: const MyAppBar(pageName: 'Regions'),
       ),
       body: ListView.builder(
         itemCount: regions.length,
@@ -56,7 +57,7 @@ class _RegionScreenState extends State<RegionScreen> {
           final String name = region['name'] ?? '';
           final String cardDescription = region['card_description'] ?? '';
           final int id = region['id'] ?? '';
-          // final String photoUrl = "http://10.0.2.2:8000/" + region['card_photo'];
+          final String photoUrl = myUrl + region['card_photo'];
 
           return ListTile(
             onTap: () {
@@ -67,19 +68,68 @@ class _RegionScreenState extends State<RegionScreen> {
                 ),
               );
             },
-            // leading: Image.network(
-            //   photoUrl,
-            //   width: 50,
-            //   height: 50,
-            //   fit: BoxFit.cover,
-            // ),
             title: Column(
               children: [
                 Row(
                   children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: Image.network(
+                                photoUrl,
+                                width: 350,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              top: 8.0,
+                              left: 8.0,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 4.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.6),
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      (index + 1).toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Text(
                       name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
                     ),
                   ],
                 ),
@@ -88,6 +138,9 @@ class _RegionScreenState extends State<RegionScreen> {
                     Flexible(
                       child: Text(
                         cardDescription,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                        ),
                       ),
                     ),
                   ],

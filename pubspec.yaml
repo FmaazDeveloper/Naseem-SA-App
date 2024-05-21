@@ -39,6 +39,14 @@ dependencies:
   another_carousel_pro: ^1.0.2
   http: ^0.13.3
   shared_preferences: ^2.0.12
+  flutter_launcher_icons: ^0.13.1
+  build_runner: ^2.4.9
+  # carousel_slider: ^4.2.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/logo/logo.png"
   # provider: ^6.0.1
   # cached_network_image: ^3.3.1
   # file_picker_cross: ^4.6.0

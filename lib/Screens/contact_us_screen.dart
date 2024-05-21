@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:naseem_sa/Bars/bottom_bar.dart';
+import 'package:naseem_sa/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -34,10 +35,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   }
 
   Future<void> _fetchContactReasons() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/contact_us'));
+    final response = await http.get(Uri.parse(myUrl + 'api/contact_us'));
     if (response.statusCode == 200) {
       setState(() {
-        _contactReasons = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+        _contactReasons =
+            List<Map<String, dynamic>>.from(jsonDecode(response.body));
       });
     } else {
       _showSnackBar('Error fetching contact reasons', Colors.red);
@@ -64,7 +66,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       final _email = prefs.getString('email');
 
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/contact_us/$_email'),
+        Uri.parse(myUrl + 'api/contact_us/$_email'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'title': _titleController.text,
@@ -177,7 +179,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 ],
               ),
             ),
-            bottomNavigationBar: const BottomBar(pageIndex: 3),
+      bottomNavigationBar: const BottomBar(pageIndex: 3),
     );
   }
 }

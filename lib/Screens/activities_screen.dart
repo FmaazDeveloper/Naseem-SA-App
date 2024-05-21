@@ -4,23 +4,22 @@ import 'dart:convert';
 
 import 'package:naseem_sa/Bars/app_bar.dart';
 import 'package:naseem_sa/Bars/bottom_bar.dart';
-import 'package:naseem_sa/Screens/activities_screen.dart';
 import 'package:naseem_sa/api/api.dart';
 
-class LandmarkScreen extends StatefulWidget {
-  final int regionID;
+class ActivityScreen extends StatefulWidget {
+  final int landmarkID;
 
-  const LandmarkScreen({
+  const ActivityScreen({
     Key? key,
-    required this.regionID,
+    required this.landmarkID,
   }) : super(key: key);
 
   @override
-  _LandmarkScreenState createState() => _LandmarkScreenState();
+  _ActivityScreenState createState() => _ActivityScreenState();
 }
 
-class _LandmarkScreenState extends State<LandmarkScreen> {
-  List<dynamic> landmarks = [];
+class _ActivityScreenState extends State<ActivityScreen> {
+  List<dynamic> activities = [];
 
   @override
   void initState() {
@@ -31,15 +30,15 @@ class _LandmarkScreenState extends State<LandmarkScreen> {
   Future<void> fetchLandmarkDetails() async {
     try {
       final response = await http.get(Uri.parse(myUrl +
-          'api/landmarks/${widget.regionID}')); // Replace with your API endpoint URL
+          'api/activities/${widget.landmarkID}')); // Replace with your API endpoint URL
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         setState(() {
-          landmarks = jsonData;
+          activities = jsonData;
         });
       } else {
-        throw Exception('Failed to fetch landmark details');
+        throw Exception('Failed to fetch activity details');
       }
     } catch (error) {
       print(error);
@@ -50,26 +49,17 @@ class _LandmarkScreenState extends State<LandmarkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MyAppBar(pageName: 'Landmarks'),
+        title: const MyAppBar(pageName: 'Activities'),
       ),
       body: ListView.builder(
-        itemCount: landmarks.length,
+        itemCount: activities.length,
         itemBuilder: (BuildContext context, int index) {
-          final landmark = landmarks[index];
-          final int id = landmark['id'] ?? '';
-          final String name = landmark['name'] ?? '';
-          final String description = landmark['description'] ?? '';
-          final String photoUrl = myUrl + landmark['photo'];
+          final activity = activities[index];
+          final String name = activity['name'] ?? '';
+          final String description = activity['description'] ?? '';
+          final String photoUrl = myUrl + activity['photo'];
 
           return ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ActivityScreen(landmarkID: id),
-                ),
-              );
-            },
             title: Column(
               children: [
                 Row(

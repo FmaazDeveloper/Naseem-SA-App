@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:naseem_sa/Bars/bottom_bar.dart';
+import 'package:naseem_sa/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:naseem_sa/screens/profile_screen.dart';
@@ -82,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     };
 
                     // Send the POST request to the API
-                    Uri apiUrl = Uri.parse('http://10.0.2.2:8000/api/login');
+                    Uri apiUrl = Uri.parse(myUrl + 'api/login');
                     http.post(apiUrl, body: requestBody).then((response) {
                       if (response.statusCode == 200) {
                         // Login successful

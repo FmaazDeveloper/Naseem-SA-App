@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:naseem_sa/Bars/app_bar.dart';
 import 'package:naseem_sa/Bars/bottom_bar.dart';
+import 'package:naseem_sa/api/api.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key});
@@ -24,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> fetchImageUrls() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://10.0.2.2:8000/administrative_regions'));
+      final response =
+          await http.get(Uri.parse(myUrl + 'api/administrative_regions'));
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         setState(() {
@@ -81,8 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             print(index);
                           },
                           images: imageUrls
-                              .map((url) =>
-                                  NetworkImage('http://127.0.0.1:8000$url'))
+                              .map((url) => NetworkImage(myUrl + url))
                               .toList(),
                           dotSize: 6,
                           indicatorBgPadding: 0,

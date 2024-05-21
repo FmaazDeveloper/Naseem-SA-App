@@ -5,15 +5,18 @@ import 'dart:convert';
 import 'package:naseem_sa/Bars/app_bar.dart';
 import 'package:naseem_sa/Bars/bottom_bar.dart';
 import 'package:naseem_sa/Screens/regions_screen.dart';
+import 'package:naseem_sa/api/api.dart';
 
 class AdministrartiveRegionScreen extends StatefulWidget {
   const AdministrartiveRegionScreen({Key? key});
 
   @override
-  _AdministrartiveRegionScreenState createState() => _AdministrartiveRegionScreenState();
+  _AdministrartiveRegionScreenState createState() =>
+      _AdministrartiveRegionScreenState();
 }
 
-class _AdministrartiveRegionScreenState extends State<AdministrartiveRegionScreen> {
+class _AdministrartiveRegionScreenState
+    extends State<AdministrartiveRegionScreen> {
   List<dynamic> regions = [];
 
   @override
@@ -24,8 +27,8 @@ class _AdministrartiveRegionScreenState extends State<AdministrartiveRegionScree
 
   Future<void> fetchImageData() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://10.0.2.2:8000/api/administrative_regions'));
+      final response =
+          await http.get(Uri.parse(myUrl + 'api/administrative_regions'));
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         setState(() {
@@ -51,23 +54,38 @@ class _AdministrartiveRegionScreenState extends State<AdministrartiveRegionScree
         itemBuilder: (BuildContext context, int index) {
           final region = regions[index];
           final String name = region['name'] ?? '';
-          // final String photoUrl = "http://10.0.2.2:8000/" + region['photo'];
+          final String photoUrl = myUrl + region['photo'];
           final int id = region['id'];
           return ListTile(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RegionScreen(administrativeRegionID: id),
+                  builder: (context) =>
+                      RegionScreen(administrativeRegionID: id),
                 ),
               );
             },
-            // leading: Image.network(
-            //   photoUrl,
-            //   width: 50,
-            //   height: 50,
-            //   fit: BoxFit.cover,
-            // ),
+            leading: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2.0,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5.0),
+                child: Image.network(
+                  photoUrl,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             title: Text(name),
           );
         },

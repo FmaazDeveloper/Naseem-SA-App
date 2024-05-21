@@ -1,1 +1,1 @@
-String myUrl = 'http://localhost:55595/api';
+String myUrl = 'http://10.0.2.2/Naseem-SA/public/';
